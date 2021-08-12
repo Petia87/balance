@@ -2,36 +2,73 @@ import Vue from 'vue'
 //import { createRouter, createWebHistory } from 'vue-router'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Profile from '../views/Profile.vue'
+import Calculator from '../views/Calculator.vue'
+import Diary from '../views/Diary.vue'
+import Fitness from '../views/Fitness.vue'
+import Nutrition from '../views/Nutrition.vue'
+import Login from '../views/Login.vue'
+import SignUp from '../views/SignUp.vue'
+import Search from '../views/Search.vue'
 
+Search
 Vue.use(VueRouter)
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: Profile,
-  },
- 
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
+export default new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/calculator',
+      name: 'Calculator',
+      component: Calculator,
+    },
+
+    {
+      path: '/diary',
+      name: 'Diary',
+      component: Diary
+    }
+    ,
+
+    {
+      path: '/fitness',
+      name: 'Fitness',
+      component: Fitness
+    }
+    ,
+
+    {
+      path: '/nutrition',
+      name: 'Nutrition',
+      component: Nutrition
+    }
+    ,
+
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    }
+    ,
+
+    {
+      path: '/signUp',
+      name: 'SignUp',
+      component: SignUp
+    }
+    ,
+
+    {
+      path: '/Search',
+      name: 'Search',
+      component: Search
+    }
+  ]
+
+
 })
 
-export default router
