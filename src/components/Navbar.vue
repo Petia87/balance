@@ -20,12 +20,14 @@
              <router-link class="px-2 white--text text-decoration-none" to="/Fitness">Fitness </router-link>
               
              <router-link class="px-2 white--text text-decoration-none" to="/Nutrition">Nutrition </router-link>
+             <router-link class="px-2 white--text text-decoration-none" to="Searc" >Searc </router-link>
             
              
         </v-toolbar-items>
     <div>
        <v-btn icon class="mx-7">
-        <v-icon><span class="caption"><router-link class="white--text text-decoration-none text-transform-none" to="/Search">mdi-magnify</router-link></span></v-icon>
+        <v-icon>"mdi-magnify"</v-icon>
+        <span class="caption"><router-link class="white--text text-decoration-none text-transform-none" to="/Search"></router-link></span>
       </v-btn>
       <v-btn icon class="mx-7 login">
         <v-icon>mdi-account</v-icon>

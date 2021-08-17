@@ -9,6 +9,7 @@ import Nutrition from '../views/Nutrition.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import Search from '../views/Search.vue'
+import Searc from '../views/Searc.vue'
 
 Search
 Vue.use(VueRouter)
@@ -66,6 +67,11 @@ export default new VueRouter({
       path: '/Search',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/Searc',
+      name: 'Searc',
+      component: Searc
     }
   ]
 
