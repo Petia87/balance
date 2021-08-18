@@ -108,4 +108,62 @@ export default {
       </v-card>
     </v-flex>
   </v-layout>*/
+  /*
+  .........................diary.................
+      <v-expansion-panel-content v-for="food in foods" :key="food.name">
+        <div slot="food">{{ food.name }}</div>
+        <v-card>
+          <v-card-text class="px-4 grey--text">
+            <div class="fond-weight-bold">
+              Carbohydrates (Grams){{ food.grams }}
+            </div>
+            <div class="fond-weight-bold">Calories{{ food.calorie }}</div>
+
+            <div>due by{{ food.due }}</div>
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+    </v-container>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      foods: [
+        {
+          name: "Apple (1 medium)",
+          grams: "26",
+          calorie: "208",
+          due: "1 Aug 2021",
+        },
+        {
+          name: "Banana (1 medium)",
+          grams: "28",
+          calorie: "308",
+          due: "2 Aug 2021",
+        },
+        {
+          name: "Apple (1 medium)",
+          grams: "26",
+          calorie: "208",
+          due: "3 Aug 2021",
+        },
+        {
+          name: "Banana (1 medium)",
+          grams: "28",
+          calorie: "308",
+          due: "4 Aug 2021",
+        },
+        {
+          name: "Apple (1 medium)",
+          grams: "26",
+          calorie: "208",
+          due: "5 Aug 2021",
+        },
+      ],
+    };
+  },
+};
+*/
 </script>

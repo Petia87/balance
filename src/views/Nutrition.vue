@@ -65,7 +65,7 @@
       them are:
     </p>
     <ul>
-      <li>Sex</li>
+      <li class="justify-center">Sex</li>
       <li>Height</li>
       <li>Weight</li>
       <li>Age</li>
