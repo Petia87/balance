@@ -113,27 +113,7 @@ export default {
       ],
     };
     
-     <v-responsive height="300"> 
-           <v-img
-
-          src="https://exceednutrition.com/wp-content/uploads/2015/02/plain-white-background-tumblr-elegant-free-wallpaper-ljlsydkr-2.jpg"
-        ></v-img>
-        -------------------------------------
-    <v-layout row wrap>
-        <v-flex xs12 v-for="card in cards" :key="card.name">
-          <v-card-flat>
-            <v-responsive class="pt-3">
-              <v-avatar>
-                <img :src="card.avatar" alt="" />
-              </v-avatar>
-            </v-responsive>
-            <v-cartd-text>
-              <div>{{ card.name }}</div>
-              <div>{{ card.par }}</div>
-            </v-cartd-text>
-          </v-card-flat>
-        </v-flex>
-      </v-layout>
+    
   },
 };
 </script>

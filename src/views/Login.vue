@@ -1,8 +1,8 @@
   <template>
-  <v-main class="green ">
-    <v-layout align-center justify-center >
+  <v-main class="green">
+    <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4 class="mb-200">
-        <v-card height="100%" >
+        <v-card height="100%">
           <v-toolbar dark color="green darken-2">
             <v-toolbar-title>Login Form</v-toolbar-title>
           </v-toolbar>
@@ -13,24 +13,40 @@
                 :counter="10"
                 :rules="nameRules"
                 label="Name or E-mail "
-             outlined
+                outlined
               ></v-text-field>
 
               <v-text-field
                 v-model="password"
                 :rules="password"
                 label="Pasword"
-               outlined
-              ></v-text-field>        
-             
+                outlined
+              ></v-text-field>
             </v-form>
-            <v-btn block   dark text-transform:none color="green darken-2" class="px-100 btn-login ;">Login</v-btn>        
-             <v-spacer></v-spacer>
-           <v-btn  small dark color="green darken-2" class="btn-sign">
-             <router-link class="px-2 white--text text-decoration-none" to="/Sign Up">Sign Up</router-link></v-btn>
+            <v-btn
+              @click="onLogin"
+              block
+              dark
+              text-transform:none
+              color="green darken-2"
+              class="px-100 btn-login ;"
+              >Login</v-btn
+            >
+            <v-alert v-if="loggedInSuccess" type="success"
+              >Login in success</v-alert
+            >
+            <v-alert v-if="loggedInError" type="error">Login in error</v-alert>
+            <v-spacer></v-spacer>
+            <v-btn small dark color="green darken-2" class="btn-sign">
+              <router-link
+                class="px-2 white--text text-decoration-none"
+                to="/Sign Up"
+                >Sign Up</router-link
+              ></v-btn
+            >
 
-             <span>Forgot Your Password</span>
-          </v-card-text>         
+            <span>Forgot Your Password</span>
+          </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
@@ -47,8 +63,12 @@
 }
 </style>
 <script>
+//import { login} from "../components/services/api";
+import {loginAxios } from "../components/services/api";
 export default {
   data: () => ({
+    loggedInSuccess: false,
+    loggedInError: false,
     valid: true,
     name: "",
     nameRules: [
@@ -66,6 +86,28 @@ export default {
   }),
 
   methods: {
+    //Fetch
+    /*onLogin() {
+      login("", "")
+        .then(() => {
+          this.loggedInSuccess = true;
+        })
+        .catch(() => {
+          console.loggedInError = true;
+        });
+    },*/
+    //Axios
+    onLogin() {
+      loginAxios("pe6o@test.com", "123456")
+        .then((user) => {
+          console.log(user);
+          this.loggedInSuccess = true;
+        })
+        .catch(() => {
+          this.loggedInError = true;
+        });
+    },
+
     validate() {
       this.$refs.form.validate();
     },
@@ -108,7 +150,7 @@ export default {
       </v-card>
     </v-flex>
   </v-layout>*/
-  /*
+/*
   .........................diary.................
       <v-expansion-panel-content v-for="food in foods" :key="food.name">
         <div slot="food">{{ food.name }}</div>
