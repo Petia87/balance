@@ -1,13 +1,40 @@
-
-import axios from "axios"
+import axios from "axios";
 /*eslint-disable no-unused-vars*/
-const URL = "https://health-balance-api.herokuapp.com/api/"
+const URL = "https://health-balance-api.herokuapp.com/api/";
 
-let token = null
-let user = null
-
+let token = null;
+let user = null;
 export function loginAxios(email, password) {
-    return axios.post(URL + "auth/Login", {
+  const serverPrimise = axios.post(URL + "auth/login", {
+    email: email,
+    password: password,
+  });
+  const UserPromise = serverPrimise.then(function(response) {
+    token = response.data.accessToken;
+    user = response.data.user;
+    return UserPromise;
+  });
+}
+
+//Register form//
+//let token = null;
+//let user = null;
+export function  registerAxios(name,lastName ,email, password) {
+  const serverPrimise = axios.post(URL + "auth​/register", {
+    name: name,
+    lastName:lastName,
+    email: email,
+    password: password,
+  });
+  const UserPromise = serverPrimise.then(function(response) {
+    token = response.data.accessToken;
+    user = response.data.user;
+    return UserPromise;
+  });
+}
+
+/*export function loginAxios(email, password) {
+    return axios.post(URL + "auth/login", {
         "email": email,
         "password": password
     })
@@ -15,7 +42,7 @@ export function loginAxios(email, password) {
             token = response.accessToken
             user = response.user
         })
-}
+}*/
 /*
 export function login(email, password) {
     return fetch(URL + "auth/login", {

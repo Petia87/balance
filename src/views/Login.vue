@@ -9,16 +9,17 @@
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
+                v-model="username"
+                :counter="20"
+                :rules="usernameRules"
                 label="Username "
                 outlined
               ></v-text-field>
 
               <v-text-field
                 v-model="password"
-                :rules="password"
+                :rules="passwordRules"
+                :counter="10"
                 label="Pasword"
                 outlined
               ></v-text-field>
@@ -64,28 +65,42 @@
 </style>
 <script>
 //import { login} from "../components/services/api";
-import {loginAxios } from "../components/services/api";
+import { loginAxios } from "../components/services/api";
 export default {
   data: () => ({
     loggedInSuccess: false,
     loggedInError: false,
     valid: true,
-    name: "",
-    nameRules: [
+    username: "",
+    usernameRules: [
       (v) => !!v || "Username is required",
-      (v) => (v && v.length <= 10) || "Username must be less than 10 characters",
+      (v) => (v && v.length >= 5) || "Username must be min 5 characters",
+      (v) => (v && v.length <= 20) || "Username must be less 20 characters",
     ],
-    email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    password: "",
+    passwordRules: [
+      
+      (v) => !!v || "Password is required",
+       (v) => (v && v.length >= 5 ) || "Password must be min 5 characters",
+       (v) => (v && v.length <= 10 ) || "Password must be less 10 characters",
+   
     ],
-    select: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-    checkbox: false,
   }),
 
   methods: {
+    //Axios
+    onLogin() {
+      loginAxios(this.username, this.password)
+        .then(() => {
+          this.loggedInSuccess = true;
+          this.username = "";
+          this.password = "";
+        })
+        .catch(() => {
+          this.loggedInError = true;
+        });
+    },
+
     //Fetch
     /*onLogin() {
       login("", "")
@@ -95,10 +110,10 @@ export default {
         .catch(() => {
           console.loggedInError = true;
         });
-    },*/
-    //Axios
+    },
+    //Axios2
     onLogin() {
-      loginAxios(" ", " ")
+      loginAxios("", "")
         .then((user) => {
           console.log(user);
           this.loggedInSuccess = true;
@@ -106,7 +121,7 @@ export default {
         .catch(() => {
           this.loggedInError = true;
         });
-    },
+    },*/
 
     validate() {
       this.$refs.form.validate();
@@ -149,7 +164,8 @@ export default {
         </v-card-actions>
       </v-card>
     </v-flex>
-  </v-layout>*/
+  </v-layout> */
+
 /*
   .........................diary.................
       <v-expansion-panel-content v-for="food in foods" :key="food.name">
