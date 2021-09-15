@@ -12,7 +12,7 @@
                 v-model="name"
                 :counter="10"
                 :rules="nameRules"
-                label="Name or E-mail "
+                label="Username "
                 outlined
               ></v-text-field>
 
@@ -72,8 +72,8 @@ export default {
     valid: true,
     name: "",
     nameRules: [
-      (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+      (v) => !!v || "Username is required",
+      (v) => (v && v.length <= 10) || "Username must be less than 10 characters",
     ],
     email: "",
     emailRules: [
@@ -98,7 +98,7 @@ export default {
     },*/
     //Axios
     onLogin() {
-      loginAxios("pe6o@test.com", "123456")
+      loginAxios(" ", " ")
         .then((user) => {
           console.log(user);
           this.loggedInSuccess = true;

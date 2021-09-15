@@ -1,5 +1,6 @@
 <template>
 <v-app class="green white--text">
+
   <Navbar/>
  
   <v-content>
@@ -20,8 +21,9 @@ export default {
     Footer
     },
   data() {
+    
     return {
-      //
+      
     };
   },
 };
