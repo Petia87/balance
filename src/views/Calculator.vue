@@ -50,7 +50,7 @@
 
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="Weight"
+                  v-model="weight"
                   :counter="3"
                   :rules="weightRules"
                   label="Weight (kg)"
@@ -67,6 +67,7 @@
             </v-row>
 
             <v-btn
+            @click="onCalculate"
               block
               dark
               text-transform:none
@@ -74,6 +75,10 @@
               class="px-100 btn-login ;"
               >Calculate</v-btn
             >
+            <v-alert v-if="calculateInSuccess" type="success"
+              >Calculate in success</v-alert
+            >
+            <v-alert v-if="calculateInError" type="error">Calculate in error</v-alert>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -87,8 +92,11 @@
 }
 </style>
 <script>
+import { calculateAxios } from "../components/services/api";
 export default {
   data: () => ({
+    calculateInSuccess: false,
+    calculateInError: false,
     valid: true,
     name: "",
     nameRules: [
@@ -101,20 +109,20 @@ export default {
       (v) =>
         (v && v.length <= 10) || "Last Name must be less than 10 characters",
     ],
-    Height: "",
+    height: "",
     heightRules: [
       (v) => !!v || "Height is required",
       (v) => (v && v.length <= 4) || "Height must be less than 4 characters",
-      /* (v) => (/d+/.test(v) ) || "Height must be positive number"*/
+      (v) => (v>0 ) || "Height must be positive number"
     ],
-    Weight: "",
+    weight: "",
     weightRules: [
       (v) => !!v || " Weight is required",
       (v) => (v && v.length <= 4) || " Weight must be less than 4 characters",
-      /*(v) => (/d+/.test(v) ) || "Height must be positive number"*/
+      (v) => (v>0 ) || "Height must be positive number"
     ],
 
-    Age: "",
+    age: "",
     ageRules: [
       (v) => !!v || "Age is required",
       (v) => (v && v.length <= 2) || " Age must be less than 2 characters",
@@ -125,6 +133,17 @@ export default {
   }),
 
   methods: {
+    //Axios
+    onCalculate() {
+      calculateAxios(this.name, this.lastName,this.height,this.weight,this.age)
+        .then(() => {
+          this.calculateInSuccess = true;
+          
+        })
+        .catch(() => {
+          this.calculateInError = true;
+        });
+    },
     validate() {
       this.$refs.form.validate();
     },

@@ -42,6 +42,7 @@
               ></v-text-field>
             </v-form>
             <v-btn
+              @click="onRegister"
               block
               dark
               text-transform:none
@@ -50,7 +51,7 @@
               >Submit</v-btn
             >
             <v-alert v-if="registerInSuccess" type="success"
-              >Login in success</v-alert
+              >Register in success</v-alert
             >
             <v-alert v-if="registerInError" type="error">Register in error</v-alert>
           </v-card-text>

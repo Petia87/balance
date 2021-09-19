@@ -4,35 +4,138 @@ const URL = "https://health-balance-api.herokuapp.com/api/";
 
 let token = null;
 let user = null;
+
+//Login form////POST//
+
 export function loginAxios(email, password) {
-  const serverPrimise = axios.post(URL + "auth/login", {
+  return axios.post(URL + "auth/login", {
+    email: email,
+    password: password,
+  }).then((response) => {
+    token = response.data.accessToken;
+    user = response.data.user;
+    alert(token)
+  });
+
+}
+//---------------------User--------------------------------//
+//Register form////POST//
+
+export function registerAxios(name, lastName, email, password) {
+  const serverPromise = axios.post(URL + "auth/register", {
+    firstName: name,
+    lastName: lastName,
+    email: email,
+    password: password,
+
+  });
+  const UserPromise = serverPromise.then(function (response) {
+    token = response.data.accessToken;
+    user = response.data.user;
+    return user;
+  });
+  return UserPromise;
+
+}
+//Register form////GET//
+/*created() {
+  axios.get('https://jsonplaceholder.typicode.com/users').then( res => {
+    this.serverDatas = res.data
+  }).catch(e => {
+    alert(e)
+  }).finally(()=>{
+    //alert("通信完了")
+  })
+}*/
+
+/*export function getRegisterAxios(name, lastName, email, password) {
+  const serverPromise = axios.get(URL +"auth/register" , {
+    firstName:name,
+    lastName: lastName,
     email: email,
     password: password,
   });
-  const UserPromise = serverPrimise.then(function(response) {
+  const UserPromise = serverPromise.then(function (response) {
     token = response.data.accessToken;
     user = response.data.user;
-    return UserPromise;
+    return user;
   });
-}
+  return UserPromise;
 
-//Register form//
-//let token = null;
-//let user = null;
-export function  registerAxios(name,lastName ,email, password) {
-  const serverPrimise = axios.post(URL + "auth​/register", {
+*/
+
+
+//Calculator//
+
+export function calculateAxios(name, lastName, height, weight, age) {
+  const serverPrimise = axios.put(URL + "user/{id}", {
+    firstName: name,
+    lastName: lastName,
+    height: height,
+    weight: weight,
+    age: age,
+  });
+  const UserPromise = serverPrimise.then(function (response) {
+    /*password = response.data.accessToken;
+    email = response.data.user.email;
+    name = response.data.user.firstName;
+    lastName = response.data.user.lastName;
+    return email*/
+  });
+  return UserPromise;
+
+}
+//---------------------User END--------------------------------//
+
+//---------------------FOOD--------------------------------//
+//FOOD ITEM////POST//
+
+export function foodItemsAxios(name, description, calories) {
+  alert(URL + "​food-items")
+  alert(token)
+ return axios.post(URL + "​food-items", {
     name: name,
-    lastName:lastName,
-    email: email,
-    password: password,
-  });
-  const UserPromise = serverPrimise.then(function(response) {
-    token = response.data.accessToken;
-    user = response.data.user;
-    return UserPromise;
-  });
-}
+    description: description,
+    calories: Number(calories)
+  },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
 
+      }
+    });
+  /*const UserPromise = serverPromise.then(function (response) {
+    token = response.data.accessToken;
+    alert(token)
+    user = response.data.user;
+    //return user;
+  });
+  return UserPromise;*/
+}
+//---------------------FOOD END--------------------------------//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------AXIOS&FETCH--------------------------------//
 /*export function loginAxios(email, password) {
     return axios.post(URL + "auth/login", {
         "email": email,
@@ -72,3 +175,4 @@ export function login(email, password) {
       console.error('Error:', error);
     });
 }*/
+//---------------------AXIOS&FETCH--------------------------------

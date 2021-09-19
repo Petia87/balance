@@ -1,119 +1,181 @@
 <template>
-  <v-main class="green">
-    <h1 class="display-5" id="title_second">Welcome to Healthy Balance</h1>
-    <h2 id="title_" class="mb-5">Calories counter</h2>
-
-    <v-layout row wrap>
-      <v-responsive width="100%" height="490px" class="white">
-        <v-img width="430" class="wallpaper" src="pic2.jpg"></v-img>
-        <h2 id="title__">The easyest way to reach your healthy goal</h2>
-      </v-responsive>
-      
-      <v-flex
-        xs12
-        sm6
-        md4
-        lg3
-        v-for="card in cards"
-        :key="card.name"
-        height="100px"
-      >
-        <v-container class="p5">
-          <v-card class="text-xs-center card_pic">
-            <v-responsive class="p5">
-              <v-img :src="card.avatar"></v-img>
-            </v-responsive>
-
-            <v-card-title>
-              <div>{{ card.name }}</div>
-            </v-card-title>
-            <v-card-subtitle>
-              <div>{{ card.par }}</div>
-            </v-card-subtitle>
-          </v-card>
-        </v-container>
-      </v-flex>
-    </v-layout>
-  </v-main>
+  <v-app id="app">
+    <v-container>
+      <v-row>
+        <v-col cols="10">
+          <v-toolbar flat color="white">
+            <v-toolbar-title>My CRUD</v-toolbar-title>
+            <v-divider class="mx-2" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="500px">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary" dark class="mb-2" v-on="on"
+                  >New Item</v-btn
+                >
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">{{ formTitle }}</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="name"
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.description"
+                          label="description"
+                        ></v-text-field>
+                      </v-flex>
+                       <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.calories"
+                          label="calories"
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" flat @click="close"
+                    >Cancel</v-btn
+                  >
+                  <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+          <v-data-table :headers="headers" :items="serverDatas">
+            <template slot="items" slot-scope="props">
+              <td class="text-xs-left">{{ props.item.id }}</td>
+              <td class="text-xs-left">{{ props.item.name }}</td>
+              <td class="text-xs-left">{{ props.item.description }}</td>
+              <td class="text-xs-left">{{ props.item.calories }}</td>
+              
+              <td class="justify-center layout px-0">
+                <v-btn small color="aqua" @click="editItem(props.item)">
+                  edit
+                </v-btn>
+                <v-btn small color="error" @click="deleteItem(props.item)">
+                  delete
+                </v-btn>
+              </td>
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
-<style scoped>
-.wallpaper {
-  margin: 0 auto;
-}
 
-#title_second {
-  text-align: center;
-  color: white;
-  margin: 0 auto;
-  font-size: 3rem;
-}
-#title_ {
-  text-align: center;
-  color: white;
-  margin: 0 auto;
-  font-size: 2.3rem;
-}
-#title__{
-  text-align: center;
-  color:green;
-  margin: 0 auto;
-  font-size: 1.5rem;
-}
-.card_pic {
-  width: 80%;
-  height: 60%;
-  padding: 0;
-}
-</style>
 <script>
+import axios from "axios";
 export default {
-  data: () => {
+  data() {
     return {
-      cards: [
+      dialog: false,
+      isCreate: true,
+      editedItem: {
+        id: 0,
+        name: "",
+        description: 0,
+        calories:0,
+      },
+      headers: [
         {
-          name: "Loem",
-          par: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-1.jpg",
+          text: "ID",
+          value: "id",
         },
         {
-          name: "Loremfh",
-          par: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-2.jpg",
+          text: "name",
+          value: "name",
         },
         {
-          name: "Loremky",
-          par: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-3.jpg",
+          text: "description",
+          value: "description",
         },
         {
-          name: "Loremsa",
-          par: "Lorem ipsum dolor sit amet consectetur amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-4.jpg",
+          text: "calories",
+          value: "calories",
         },
         {
-          name: "Loremkt",
-          par: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-5.jpg",
-        },
-        {
-          name: "Loremlk",
-          par: "Lorem ipsum dolor amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis amet consectetur amet consectetur  ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-6.jpg",
-        },
-        {
-          name: "Loremr",
-          par: "Lorem amet consectetur amet consectetur  ipsum dolor sit amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-7.jpg",
-        },
-        {
-          name: "Lorem",
-          par: "Lorem ipsum dolor sit amet consectetur amet consectetur adipisicing elit. Explicabo perferendis, sint nostrum blanditiis sapiente eos natus at nobis iure ea sit! In inventore odit ex recusandae animi non libero dicta",
-          avatar: "avatar-8.jpg",
+          text: "delete",
+          value: "delete",
+          sortable: false,
         },
       ],
+      serverDatas: [],
     };
-    
-    
   },
-};
+  computed: {
+    formTitle() {
+      return this.isCreate ? "New Item" : "Edit Item";
+    },
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+  },
+  methods: {
+    deleteItem(item) {
+      confirm("delete") && this.deleteUser(item);
+    },
+    editItem(item) {
+      this.isCreate = false;
+      this.editedItem = item;
+      this.dialog = true;
+    },
+    close() {
+      this.dialog = false;
+    },
+    save() {
+      if (!this.isCreate) {
+        this.update();
+      } else {
+        this.create();
+      }
+      this.dialog = false;
+    },
+    
+    create() {
+      axios
+        .post("https://health-balance-api.herokuapp.com/api/food-items", {
+          name: this.editedItem.name,
+          description: this.editedItem.description,
+          calories:this.editedItem.calories,
+        })
+        .then((response) => this.serverDatas.unshift(response.data))
+        .catch((error) => alert(error));
+    },
+    deleteUser(item) {
+      axios
+        .delete("https://health-balance-api.herokuapp.com/api/food-items" + item.id)
+        .then((response) => console.log(response))
+        .catch((error) => alert(error));
+      const index = this.serverDatas.indexOf(item);
+      this.serverDatas.splice(index, 1);
+    },
+  },
+  created() {
+    axios
+      .get("https://health-balance-api.herokuapp.com/api/food-items")
+      .then((res) => {
+        this.serverDatas = res.data;
+      })
+      .catch((e) => {
+        alert(e);
+      })
+      .finally(() => {
+        
+      });
+  },
+}
 </script>
+
