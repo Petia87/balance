@@ -14,7 +14,7 @@
           clearable
           flat
           solo-inverted
-          hide-details
+          hide-detail
           prepend-inner-icon="mdi-magnify"
           label="Search"
         ></v-text-field>
@@ -42,7 +42,6 @@
       </v-toolbar>
 
       <v-toolbar flat>
-        
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <!--New Item-->
@@ -140,11 +139,11 @@
 <script>
 //////////////////////////////////////
 import { foodItemsAxios } from "../components/services/api";
-
+import { searchFoodAxios } from "../components/services/api";
 export default {
   data: () => ({
-    foodItemsInSuccess:false,
-    foodItemsInError:false,
+    foodItemsInSuccess: false,
+    foodItemsInError: false,
     dialog: false,
     dialogDelete: false,
     search: "",
@@ -153,7 +152,7 @@ export default {
     sortBy: "name",
     headers: [
       {
-        text: "Dessert (100g serving)",
+        text: "Food name (100g)",
         align: "start",
         sortable: false,
         value: "name",
@@ -205,15 +204,28 @@ export default {
     this.initialize();
   },
 
-
   methods: {
     ////////////////////////////////////////////////////////
     //Axios
     onfoodItems() {
-      foodItemsAxios(this.editedItem.name, this.editedItem.description, this.editedItem.calories)
-      
+      foodItemsAxios(
+        this.editedItem.name,
+        this.editedItem.description,
+        this.editedItem.calories
+      )
         .then(() => {
           this.foodItemsInSuccess = true;
+        })
+        .catch(() => {
+          this.foodItemsInError = true;
+        });
+    },
+
+    onSearchFood() {
+      searchFoodAxios()
+        .then((response) => {
+          this.foodItemsInSuccess = true;
+          console.log(response.data);
         })
         .catch(() => {
           this.foodItemsInError = true;
@@ -229,7 +241,6 @@ export default {
     updateItemsPerPage(number) {
       this.itemsPerPage = number;
     },
-
 
     editItem(item) {
       this.editedIndex = this.foods.indexOf(item);
@@ -273,9 +284,9 @@ export default {
       }
       this.close();
     },
-    initialize(){
-      console.log("Iiniiiiii")
-    }
+    initialize() {
+      console.log("Iiniiiiii");
+    },
   },
 };
 </script>

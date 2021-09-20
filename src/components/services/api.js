@@ -14,8 +14,9 @@ export function loginAxios(email, password) {
   }).then((response) => {
     token = response.data.accessToken;
     user = response.data.user;
-    alert(token)
+    //alert(token)
   });
+
 
 }
 //---------------------User--------------------------------//
@@ -91,9 +92,7 @@ export function calculateAxios(name, lastName, height, weight, age) {
 //FOOD ITEM////POST//
 
 export function foodItemsAxios(name, description, calories) {
-  alert(URL + "​food-items")
-  alert(token)
- return axios.post(URL + "​food-items", {
+  return axios.post(URL + "food-items", {
     name: name,
     description: description,
     calories: Number(calories)
@@ -105,14 +104,42 @@ export function foodItemsAxios(name, description, calories) {
 
       }
     });
-  /*const UserPromise = serverPromise.then(function (response) {
-    token = response.data.accessToken;
-    alert(token)
-    user = response.data.user;
-    //return user;
-  });
-  return UserPromise;*/
+
 }
+export function searchFoodAxios(food) {
+  const foodRequest = axios.get(URL + "food-items", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    parameters: {
+      page: 1,
+      limit: 10,
+      search: food,
+    }
+  });
+  const foodResponse = foodRequest.then(function (response) {
+    return response
+    //let ResponseItems=response.data.items
+    //return name;
+  });
+  return foodResponse;
+}
+
+/*export function getfoodItems() {
+  return axios.get(URL + "food-items", {
+  },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+
+      }
+    });
+
+}*/
+
+
+
 //---------------------FOOD END--------------------------------//
 
 
