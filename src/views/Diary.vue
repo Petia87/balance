@@ -11,6 +11,7 @@
       <v-toolbar dark color="green darken-3" class="mb-1">
         <v-text-field
           v-model="search"
+          @keyup.enter="onSearch"
           clearable
           flat
           solo-inverted
@@ -18,6 +19,7 @@
           prepend-inner-icon="mdi-magnify"
           label="Search"
         ></v-text-field>
+
         <template v-if="$vuetify.breakpoint.mdAndUp">
           <v-spacer></v-spacer>
           <v-select
@@ -50,7 +52,11 @@
               New Item
             </v-btn>
             <!--New Item-->
-
+            <!--GET-->
+            <v-btn color="green" dark class="mb-2" @click="onGetFood()">
+              Get
+            </v-btn>
+            <!--GET-->
             <!--Table-->
           </template>
           <v-card>
@@ -139,7 +145,8 @@
 <script>
 //////////////////////////////////////
 import { foodItemsAxios } from "../components/services/api";
-import { searchFoodAxios } from "../components/services/api";
+import { getFoodAxios } from "../components/services/api";
+import { deleteFoodAxios } from "../components/services/api";
 export default {
   data: () => ({
     foodItemsInSuccess: false,
@@ -147,6 +154,9 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: "",
+    searchFood: "",
+    foodsName: "",
+    foodName: "",
     filter: {},
     sortDesc: false,
     sortBy: "name",
@@ -162,7 +172,7 @@ export default {
       { text: "Date", value: "date" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    keys: ["Name", "description", "calories", "date"],
+    keys: ["id", "Name", "description", "calories", "date"],
     foods: [],
     editedIndex: -1,
     editedItem: {
@@ -221,15 +231,57 @@ export default {
         });
     },
 
-    onSearchFood() {
-      searchFoodAxios()
-        .then((response) => {
-          this.foodItemsInSuccess = true;
-          console.log(response.data);
+    onGetFood() {
+      getFoodAxios().then((response) => {
+        this.foods = response;
+        for (const itemOBj of this.foods) {
+          console.log(itemOBj);
+          console.log(itemOBj.name);
+          console.log(this.searchFood);
+         /* if (itemOBj.name === this.searchFood) {
+            this.foodsName = itemOBj;
+          } else {
+            // alert("Not found")
+          }*/
+        }
+        /*this.foodsName=this.foods.find((name) => {
+              console.log(name);
+        return  this.foods.name === this.searchFood;
+      });
+           console.log(this.foods.name  );
+           console.log(this.searchFood  );*/
+        return response;
+      });
+    },
+
+    onSearch() {
+      this.searchFood = this.search;
+      console.log(this.searchFood);
+      console.log(this.foodName);
+      console.log(this.search);
+    },
+
+    /* findFood() {
+      let citiesServer  = this.currentServer.find((cities) => {
+        return cities.city_name === this.selectedCities.cityName;
+      });
+      return citiesServer ;
+    },*/
+
+    onDeleteFood(food) {
+      deleteFoodAxios(food)
+        /* .then((response) => {
+        //this.foods= response.splice({id},1)
+          this.foods.splice(this.editedIndex, 1);
+          console.log( response);
         })
         .catch(() => {
           this.foodItemsInError = true;
-        });
+        });*/
+        .then((response) => console.log(response))
+        .catch(() => (this.foodItemsInError = true));
+      const index = this.foods.indexOf(food);
+      this.foods.splice(index, 1);
     },
 
     nextPage() {
@@ -258,6 +310,7 @@ export default {
     deleteItemConfirm() {
       this.foods.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.onDeleteFood();
     },
 
     close() {

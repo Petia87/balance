@@ -106,21 +106,41 @@ export function foodItemsAxios(name, description, calories) {
     });
 
 }
-export function searchFoodAxios(food) {
+//FOOD ITEM////get//
+export function getFoodAxios(food) {
   const foodRequest = axios.get(URL + "food-items", {
     headers: {
       Authorization: "Bearer " + token,
     },
     parameters: {
-      page: 1,
-      limit: 10,
+      page: 2,
+      limit: 100,
       search: food,
     }
   });
   const foodResponse = foodRequest.then(function (response) {
-    return response
-    //let ResponseItems=response.data.items
-    //return name;
+
+    const ResponseItems = response.data.items
+    console.log(ResponseItems);
+    return ResponseItems
+  });
+  return foodResponse;
+}
+
+//FOOD ITEM////Delete//
+export function deleteFoodAxios(food) {
+  const foodRequest = axios.delete(URL + "food-items​/{id}", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    parameters: {
+     id: "",
+    }
+  });
+  const foodResponse = foodRequest.then(function (response) {
+    const ResponseItems = response.data.items
+    console.log(ResponseItems);
+    return ResponseItems
   });
   return foodResponse;
 }
