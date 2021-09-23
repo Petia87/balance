@@ -11,7 +11,7 @@
       <v-toolbar dark color="green darken-3" class="mb-1">
         <v-text-field
           v-model="search"
-          @keyup.enter="onSearch"
+          @keyup.enter="onSearch2Food()"
           clearable
           flat
           solo-inverted
@@ -43,6 +43,23 @@
         </template>
       </v-toolbar>
 
+      <!--Search2-->
+      <template>
+        <v-text-field
+          v-model="search2"
+          @keyup.enter="onSearch2Food()"
+          clearable
+          flat
+          solo-inverted
+          hide-detail
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+        <v-btn color="green" dark class="mb-2" @click="onSearch2Food()">
+          Search2
+        </v-btn>
+      </template>
+      <!--Search2-->
       <v-toolbar flat>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
@@ -52,7 +69,11 @@
               New Item
             </v-btn>
             <!--New Item-->
+
             <!--GET-->
+            <v-btn color="green" dark class="mb-2" @click="onSearch2Food()">
+              Search2
+            </v-btn>
             <v-btn color="green" dark class="mb-2" @click="onGetFood()">
               Get
             </v-btn>
@@ -146,6 +167,7 @@
 //////////////////////////////////////
 import { foodItemsAxios } from "../components/services/api";
 import { getFoodAxios } from "../components/services/api";
+import { searchFoodAxios } from "../components/services/api";
 import { deleteFoodAxios } from "../components/services/api";
 export default {
   data: () => ({
@@ -154,6 +176,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: "",
+    search2: "",
     searchFood: "",
     foodsName: "",
     foodName: "",
@@ -234,11 +257,12 @@ export default {
     onGetFood() {
       getFoodAxios().then((response) => {
         this.foods = response;
+
         for (const itemOBj of this.foods) {
           console.log(itemOBj);
           console.log(itemOBj.name);
           console.log(this.searchFood);
-         /* if (itemOBj.name === this.searchFood) {
+          /* if (itemOBj.name === this.searchFood) {
             this.foodsName = itemOBj;
           } else {
             // alert("Not found")
@@ -254,11 +278,41 @@ export default {
       });
     },
 
-    onSearch() {
+    /*onSearch() {
       this.searchFood = this.search;
       console.log(this.searchFood);
       console.log(this.foodName);
       console.log(this.search);
+    },*/
+
+    onSearch2Food() {
+      this.searchFood = this.search2;
+      searchFoodAxios().then((response) => {
+       this.foods = response;
+this.food=this.foods.find((food)=>{
+  //console.log(food.name);
+  // console.log(this.searchFood);
+  return food.name===this.searchFood
+})
+console.log(this.food);
+return this.food
+      /* for (const itemOBj of this.foods) {
+         console.log(itemOBj);
+        // console.log(itemOBj.name);
+         //console.log(this.searchFood);
+         /if (itemOBj.hasOwnProperty(this.searchFood)) {
+           console.log(itemOBj.name);
+          } else {
+             alert("Not found")
+          }
+        }
+        this.foodsName=this.foods.find(this.foods.name===this.searchFood)
+     
+      
+           console.log(this.foods.name  );
+           console.log(this.searchFood  );
+        return response;*/
+      });
     },
 
     /* findFood() {
@@ -342,4 +396,5 @@ export default {
     },
   },
 };
+/*  @keyup.enter="onSearch"*/
 </script>

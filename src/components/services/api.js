@@ -127,6 +127,26 @@ export function getFoodAxios(food) {
   return foodResponse;
 }
 
+//FOOD ITEM////sEARCH//
+export function searchFoodAxios(food) {
+  const foodRequest = axios.get(URL + "food-items", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    parameters: {
+      page: 2,
+      limit: 100,
+      search: food,
+    }
+  });
+  const foodResponse = foodRequest.then(function (response) {
+
+    const ResponseItems = response.data.items
+    return ResponseItems
+  });
+  return foodResponse;
+}
+
 //FOOD ITEM////Delete//
 export function deleteFoodAxios(food) {
   const foodRequest = axios.delete(URL + "food-items​/{id}", {
