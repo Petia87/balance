@@ -43,23 +43,6 @@
         </template>
       </v-toolbar>
 
-      <!--Search2-->
-      <template>
-        <v-text-field
-          v-model="search2"
-          @keyup.enter="onSearch2Food()"
-          clearable
-          flat
-          solo-inverted
-          hide-detail
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-        ></v-text-field>
-        <v-btn color="green" dark class="mb-2" @click="onSearch2Food()">
-          Search2
-        </v-btn>
-      </template>
-      <!--Search2-->
       <v-toolbar flat>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
@@ -142,9 +125,8 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
+              <v-btn color="blue darken-1" text @click="deleteAll">OK</v-btn>
+         
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -286,33 +268,35 @@ export default {
     },*/
 
     onSearch2Food() {
-      this.searchFood = this.search2;
+      this.searchFood = this.search;
       searchFoodAxios().then((response) => {
-       this.foods = response;
-this.food=this.foods.find((food)=>{
-  return food.name===this.searchFood
-})
-console.log(this.food);
-return this.food
+        this.foods = response;
+        this.food = this.foods.find((food) => {
+          return food.name === this.searchFood;
+        });
+        console.log(this.food);
       });
-     
     },
 
-    
+   deleteAll() {
+      this.deleteItemConfirm()
+       this.onDeleteFood(food);
+    },
+
     onDeleteFood(food) {
       deleteFoodAxios(food)
-        /* .then((response) => {
-        //this.foods= response.splice({id},1)
+       /* .then((response) => {
+        this.foods= response.splice({id},1)
           this.foods.splice(this.editedIndex, 1);
           console.log( response);
         })
         .catch(() => {
           this.foodItemsInError = true;
-        });*/
+        });
         .then((response) => console.log(response))
         .catch(() => (this.foodItemsInError = true));
       const index = this.foods.indexOf(food);
-      this.foods.splice(index, 1);
+      this.foods.splice(index, 1);*/
     },
 
     nextPage() {
@@ -373,5 +357,24 @@ return this.food
     },
   },
 };
-/*  @keyup.enter="onSearch"*/
+/*  @keyup.enter="onSearch"
+
+ <!--Search2-->
+      <template>
+        <v-text-field
+          v-model="search2"
+          @keyup.enter="onSearch2Food()"
+          clearable
+          flat
+          solo-inverted
+          hide-detail
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+        <v-btn color="green" dark class="mb-2" @click="onSearch2Food()">
+          Search2
+        </v-btn>
+      </template>
+      <!--Search2-->
+*/
 </script>

@@ -4,7 +4,10 @@ const URL = "https://health-balance-api.herokuapp.com/api/";
 
 let token = null;
 let user = null;
-
+var currentToken = localStorage.getItem('token');
+if (currentToken) {
+  token = currentToken
+}
 //Login form////POST//
 
 export function loginAxios(email, password) {
@@ -13,6 +16,7 @@ export function loginAxios(email, password) {
     password: password,
   }).then((response) => {
     token = response.data.accessToken;
+    localStorage.setItem("token", token)
     user = response.data.user;
     //alert(token)
   });
@@ -45,7 +49,7 @@ export function registerAxios(name, lastName, email, password) {
   }).catch(e => {
     alert(e)
   }).finally(()=>{
-    //alert("通信完了")
+    //alert("通信完了")A
   })
 }*/
 
@@ -133,7 +137,7 @@ export function searchFoodAxios(food) {
     headers: {
       Authorization: "Bearer " + token,
     },
-    parameters: {
+    params: {
       page: 2,
       limit: 100,
       search: food,
@@ -142,41 +146,29 @@ export function searchFoodAxios(food) {
   const foodResponse = foodRequest.then(function (response) {
 
     const ResponseItems = response.data.items
+    console.log(response.data.items);
     return ResponseItems
   });
+
   return foodResponse;
 }
 
 //FOOD ITEM////Delete//
-export function deleteFoodAxios(food) {
-  const foodRequest = axios.delete(URL + "food-items​/{id}", {
+export function deleteFoodAxios(foodId) {
+  const foodRequest = axios.delete(URL + "food-items​/" + foodId, {
     headers: {
       Authorization: "Bearer " + token,
     },
-    parameters: {
-     id: "",
-    }
   });
-  const foodResponse = foodRequest.then(function (response) {
+ /* const foodResponse = foodRequest.then(function (response) {
     const ResponseItems = response.data.items
     console.log(ResponseItems);
     return ResponseItems
   });
   return foodResponse;
-}
-
-/*export function getfoodItems() {
-  return axios.get(URL + "food-items", {
-  },
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json"
-
-      }
-    });
-
 }*/
+
+}
 
 
 
