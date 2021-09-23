@@ -290,38 +290,15 @@ export default {
       searchFoodAxios().then((response) => {
        this.foods = response;
 this.food=this.foods.find((food)=>{
-  //console.log(food.name);
-  // console.log(this.searchFood);
   return food.name===this.searchFood
 })
 console.log(this.food);
 return this.food
-      /* for (const itemOBj of this.foods) {
-         console.log(itemOBj);
-        // console.log(itemOBj.name);
-         //console.log(this.searchFood);
-         /if (itemOBj.hasOwnProperty(this.searchFood)) {
-           console.log(itemOBj.name);
-          } else {
-             alert("Not found")
-          }
-        }
-        this.foodsName=this.foods.find(this.foods.name===this.searchFood)
-     
-      
-           console.log(this.foods.name  );
-           console.log(this.searchFood  );
-        return response;*/
       });
+     
     },
 
-    /* findFood() {
-      let citiesServer  = this.currentServer.find((cities) => {
-        return cities.city_name === this.selectedCities.cityName;
-      });
-      return citiesServer ;
-    },*/
-
+    
     onDeleteFood(food) {
       deleteFoodAxios(food)
         /* .then((response) => {
