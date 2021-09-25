@@ -55,7 +55,7 @@
 
             <!--GET-->
             <v-btn color="green" dark class="mb-2" @click="onSearch2Food()">
-              Search2
+              Search
             </v-btn>
             <v-btn color="green" dark class="mb-2" @click="onGetFood()">
               Get
@@ -126,7 +126,7 @@
                 >Cancel</v-btn
               >
               <v-btn color="blue darken-1" text @click="deleteAll">OK</v-btn>
-         
+
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -137,7 +137,7 @@
     <!--Item-->
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small @click="deleteItem(item)" > mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="green" @click="initialize"> Reset </v-btn>
@@ -158,10 +158,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: "",
-    search2: "",
-    searchFood: "",
-    foodsName: "",
-    foodName: "",
+    
     filter: {},
     sortDesc: false,
     sortBy: "name",
@@ -244,59 +241,41 @@ export default {
           console.log(itemOBj);
           console.log(itemOBj.name);
           console.log(this.searchFood);
-          /* if (itemOBj.name === this.searchFood) {
-            this.foodsName = itemOBj;
-          } else {
-            // alert("Not found")
-          }*/
         }
-        /*this.foodsName=this.foods.find((name) => {
-              console.log(name);
-        return  this.foods.name === this.searchFood;
-      });
-           console.log(this.foods.name  );
-           console.log(this.searchFood  );*/
         return response;
       });
     },
-
-    /*onSearch() {
-      this.searchFood = this.search;
-      console.log(this.searchFood);
-      console.log(this.foodName);
-      console.log(this.search);
-    },*/
 
     onSearch2Food() {
       this.searchFood = this.search;
       searchFoodAxios().then((response) => {
         this.foods = response;
-        this.food = this.foods.find((food) => {
+        /*this.food = this.foods.find((food) => {
+          console.log(food.name);
+          //console.log(this.searchFood);
           return food.name === this.searchFood;
         });
-        console.log(this.food);
+        console.log(this.food);*/
+       // console.log(response);
+        return response
       });
     },
 
-   deleteAll() {
-      this.deleteItemConfirm()
-       this.onDeleteFood(food);
+    deleteAll() {
+      this.deleteItemConfirm();
+      this.onDeleteFood();
     },
 
-    onDeleteFood(food) {
-      deleteFoodAxios(food)
-       /* .then((response) => {
-        this.foods= response.splice({id},1)
-          this.foods.splice(this.editedIndex, 1);
-          console.log( response);
+    onDeleteFood(foodId) {
+      deleteFoodAxios(foodId)
+      .then((response) => {
+        this.foods= response.splice(foodId,1)
+          console.log( this.foods);
         })
         .catch(() => {
           this.foodItemsInError = true;
         });
-        .then((response) => console.log(response))
-        .catch(() => (this.foodItemsInError = true));
-      const index = this.foods.indexOf(food);
-      this.foods.splice(index, 1);*/
+        
     },
 
     nextPage() {
@@ -311,12 +290,14 @@ export default {
 
     editItem(item) {
       this.editedIndex = this.foods.indexOf(item);
-      //this.editedItem={...item}
+      this.editedItem = { ...item };
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
+      this.foodId=this.food.id
+      console.log(this.food.id);
       this.editedIndex = this.foods.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;

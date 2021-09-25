@@ -2,6 +2,7 @@ import axios from "axios";
 /*eslint-disable no-unused-vars*/
 const URL = "https://health-balance-api.herokuapp.com/api/";
 
+
 let token = null;
 let user = null;
 var currentToken = localStorage.getItem('token');
@@ -116,8 +117,8 @@ export function getFoodAxios(food) {
     headers: {
       Authorization: "Bearer " + token,
     },
-    parameters: {
-      page: 2,
+    params: {
+      page: 1,
       limit: 100,
       search: food,
     }
@@ -138,37 +139,43 @@ export function searchFoodAxios(food) {
       Authorization: "Bearer " + token,
     },
     params: {
-      page: 2,
+      page: 1,
       limit: 100,
       search: food,
     }
   });
   const foodResponse = foodRequest.then(function (response) {
-
     const ResponseItems = response.data.items
     console.log(response.data.items);
     return ResponseItems
   });
-
   return foodResponse;
 }
 
 //FOOD ITEM////Delete//
 export function deleteFoodAxios(foodId) {
+  
   const foodRequest = axios.delete(URL + "food-items​/" + foodId, {
     headers: {
       Authorization: "Bearer " + token,
     },
   });
- /* const foodResponse = foodRequest.then(function (response) {
-    const ResponseItems = response.data.items
-    console.log(ResponseItems);
-    return ResponseItems
-  });
-  return foodResponse;
-}*/
+  console.log(foodRequest);
 
 }
+
+/*export function getfoodItems() {
+  return axios.get(URL + "food-items", {
+  },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+
+      }
+    });
+
+}*/
 
 
 
