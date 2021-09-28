@@ -15,6 +15,7 @@
                   :rules="nameRules"
                   label="First Name "
                   outlined
+                  @click="onGet()"
                 ></v-text-field>
               </v-col>
 
@@ -32,7 +33,7 @@
                 <v-text-field
                   v-model="age"
                   :counter="2"
-                  :rules="AgeRules"
+                  :rules="ageRules"
                   label="Age"
                   outlined
                 ></v-text-field>
@@ -67,7 +68,7 @@
             </v-row>
 
             <v-btn
-            @click="onCalculate"
+              @click="onCalculate"
               block
               dark
               text-transform:none
@@ -78,7 +79,9 @@
             <v-alert v-if="calculateInSuccess" type="success"
               >Calculate in success</v-alert
             >
-            <v-alert v-if="calculateInError" type="error">Calculate in error</v-alert>
+            <v-alert v-if="calculateInError" type="error"
+              >Calculate in error</v-alert
+            >
           </v-card-text>
         </v-card>
       </v-flex>
@@ -92,6 +95,7 @@
 }
 </style>
 <script>
+import { getMeAxios } from "../components/services/api";
 import { calculateAxios } from "../components/services/api";
 export default {
   data: () => ({
@@ -99,6 +103,7 @@ export default {
     calculateInError: false,
     valid: true,
     name: "",
+    userId: "",
     nameRules: [
       (v) => !!v || "Name is required",
       (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
@@ -113,13 +118,13 @@ export default {
     heightRules: [
       (v) => !!v || "Height is required",
       (v) => (v && v.length <= 4) || "Height must be less than 4 characters",
-      (v) => (v>0 ) || "Height must be positive number"
+      (v) => v > 0 || "Height must be positive number",
     ],
     weight: "",
     weightRules: [
       (v) => !!v || " Weight is required",
       (v) => (v && v.length <= 4) || " Weight must be less than 4 characters",
-      (v) => (v>0 ) || "Height must be positive number"
+      (v) => v > 0 || "Height must be positive number",
     ],
 
     age: "",
@@ -130,15 +135,31 @@ export default {
     select: null,
     items: ["Item 1", "Item 2", "Item 3", "Item 4"],
     checkbox: false,
+    row: "",
   }),
 
   methods: {
+    onGet() {
+      getMeAxios().then((response) => {
+        this.foods = response;
+        this.userId = response.data.id;
+        console.log(this.userId);
+        return response;
+      });
+    },
+ 
     //Axios
     onCalculate() {
-      calculateAxios(this.name, this.lastName,this.height,this.weight,this.age)
+      calculateAxios(
+        this.userId,
+        this.name,
+        this.lastName,
+        this.height,
+        this.weight,
+        this.age
+      )
         .then(() => {
           this.calculateInSuccess = true;
-          
         })
         .catch(() => {
           this.calculateInError = true;

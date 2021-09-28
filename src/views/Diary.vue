@@ -102,10 +102,13 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-2" text @click="close"> Cancel </v-btn>
-              <v-btn color="green darken-2" text @click="save"> Save </v-btn>
-              <v-btn color="green darken-2" text @click="onfoodItems()">
-                Send
+              <v-btn color="green darken-2" text @click="onSentFood">
+                Save
               </v-btn>
+              <v-btn color="green darken-2" text @click="onEditFood(foodId)">
+                SentNew
+              </v-btn>
+
               <v-alert v-if="foodItemsInSuccess" type="success"
                 >foodItems in success</v-alert
               >
@@ -125,7 +128,9 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteAll">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                >OK</v-btn
+              >
 
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -137,7 +142,7 @@
     <!--Item-->
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)" > mdi-delete </v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="green" @click="initialize"> Reset </v-btn>
@@ -151,6 +156,7 @@ import { foodItemsAxios } from "../components/services/api";
 import { getFoodAxios } from "../components/services/api";
 import { searchFoodAxios } from "../components/services/api";
 import { deleteFoodAxios } from "../components/services/api";
+import { putFoodAxios } from "../components/services/api";
 export default {
   data: () => ({
     foodItemsInSuccess: false,
@@ -158,7 +164,8 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: "",
-    
+    foodItem: "",
+    foodId: "",
     filter: {},
     sortDesc: false,
     sortBy: "name",
@@ -198,6 +205,7 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
+
     filteredKeys() {
       return this.keys.filter((key) => key !== "Name");
     },
@@ -217,6 +225,15 @@ export default {
   },
 
   methods: {
+    onSentFood(itemId) {
+      this.onSave();
+      if (this.editedIndex === -1) {
+        this.onfoodItems();
+      } else {
+        this.onEditFood(itemId);
+        console.log(itemId);
+      }
+    },
     ////////////////////////////////////////////////////////
     //Axios
     onfoodItems() {
@@ -256,26 +273,34 @@ export default {
           return food.name === this.searchFood;
         });
         console.log(this.food);*/
-       // console.log(response);
-        return response
+        // console.log(response);
+        return response;
       });
     },
 
-    deleteAll() {
-      this.deleteItemConfirm();
-      this.onDeleteFood();
-    },
-
-    onDeleteFood(foodId) {
-      deleteFoodAxios(foodId)
-      .then((response) => {
-        this.foods= response.splice(foodId,1)
-          console.log( this.foods);
+    onDeleteFood(itemId) {
+      deleteFoodAxios(itemId)
+        .then((response) => {
+          this.foods = response.splice(itemId, 1);
+          console.log(this.foods);
         })
         .catch(() => {
           this.foodItemsInError = true;
         });
-        
+    },
+    onEditFood(itemId) {
+      putFoodAxios(
+        itemId,
+        this.editedItem.name,
+        this.editedItem.description,
+        this.editedItem.calories
+      )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(() => {
+          this.foodItemsInError = true;
+        });
     },
 
     nextPage() {
@@ -289,6 +314,8 @@ export default {
     },
 
     editItem(item) {
+      this.foodId = item.id;
+      console.log(this.foodId);
       this.editedIndex = this.foods.indexOf(item);
       this.editedItem = { ...item };
       this.editedItem = Object.assign({}, item);
@@ -296,8 +323,10 @@ export default {
     },
 
     deleteItem(item) {
-      this.foodId=this.food.id
-      console.log(this.food.id);
+      this.foodId = item.id;
+      console.log(this.foodId);
+      // deleteFoodAxios(this.foodId)
+
       this.editedIndex = this.foods.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
@@ -306,7 +335,7 @@ export default {
     deleteItemConfirm() {
       this.foods.splice(this.editedIndex, 1);
       this.closeDelete();
-      this.onDeleteFood();
+      this.onDeleteFood(this.foodId);
     },
 
     close() {
@@ -325,7 +354,7 @@ export default {
       });
     },
 
-    save() {
+    onSave() {
       if (this.editedIndex > -1) {
         Object.assign(this.foods[this.editedIndex], this.editedItem);
       } else {

@@ -43,53 +43,32 @@ export function registerAxios(name, lastName, email, password) {
   return UserPromise;
 
 }
-//Register form////GET//
-/*created() {
-  axios.get('https://jsonplaceholder.typicode.com/users').then( res => {
-    this.serverDatas = res.data
-  }).catch(e => {
-    alert(e)
-  }).finally(()=>{
-    //alert("通信完了")A
-  })
-}*/
 
-/*export function getRegisterAxios(name, lastName, email, password) {
-  const serverPromise = axios.get(URL +"auth/register" , {
-    firstName:name,
-    lastName: lastName,
-    email: email,
-    password: password,
+export function getMeAxios() {
+ return axios.get(URL+"auth/me", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    
   });
-  const UserPromise = serverPromise.then(function (response) {
-    token = response.data.accessToken;
-    user = response.data.user;
-    return user;
-  });
-  return UserPromise;
-
-*/
-
+  
+}
 
 //Calculator//
 
-export function calculateAxios(name, lastName, height, weight, age) {
-  const serverPrimise = axios.put(URL + "user/{id}", {
+export function calculateAxios(userId,name, lastName, height, weight, age) {
+  return axios.put(URL + "user/" + userId, {
     firstName: name,
     lastName: lastName,
     height: height,
     weight: weight,
     age: age,
-  });
-  const UserPromise = serverPrimise.then(function (response) {
-    /*password = response.data.accessToken;
-    email = response.data.user.email;
-    name = response.data.user.firstName;
-    lastName = response.data.user.lastName;
-    return email*/
-  });
-  return UserPromise;
+  }, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
 
+  });
 }
 //---------------------User END--------------------------------//
 
@@ -133,7 +112,7 @@ export function getFoodAxios(food) {
 }
 
 //FOOD ITEM////sEARCH//
-export function searchFoodAxios(food) {
+export function searchFoodAxios(item) {
   const foodRequest = axios.get(URL + "food-items", {
     headers: {
       Authorization: "Bearer " + token,
@@ -141,7 +120,7 @@ export function searchFoodAxios(food) {
     params: {
       page: 1,
       limit: 100,
-      search: food,
+      search: item,
     }
   });
   const foodResponse = foodRequest.then(function (response) {
@@ -154,8 +133,8 @@ export function searchFoodAxios(food) {
 
 //FOOD ITEM////Delete//
 export function deleteFoodAxios(foodId) {
-  
-  const foodRequest = axios.delete(URL + "food-items​/" + foodId, {
+
+  const foodRequest = axios.delete(URL + "food-items/" + foodId, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -163,6 +142,20 @@ export function deleteFoodAxios(foodId) {
   console.log(foodRequest);
 
 }
+
+//FOOD ITEM////PutId//
+export function putFoodAxios(foodId, name, description, calories) {
+  return axios.put(URL + "food-items/" + foodId, {
+     name: name,
+    description: description,
+    calories: Number(calories),
+  }, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}
+
 
 /*export function getfoodItems() {
   return axios.get(URL + "food-items", {
@@ -176,6 +169,32 @@ export function deleteFoodAxios(foodId) {
     });
 
 }*/
+//Register form////GET//
+/*created() {
+  axios.get('https://jsonplaceholder.typicode.com/users').then( res => {
+    this.serverDatas = res.data
+  }).catch(e => {
+    alert(e)
+  }).finally(()=>{
+    //alert("通信完了")A
+  })
+}*/
+
+/*export function getRegisterAxios(name, lastName, email, password) {
+  const serverPromise = axios.get(URL +"auth/register" , {
+    firstName:name,
+    lastName: lastName,
+    email: email,
+    password: password,
+  });
+  const UserPromise = serverPromise.then(function (response) {
+    token = response.data.accessToken;
+    user = response.data.user;
+    return user;
+  });
+  return UserPromise;
+
+*/
 
 
 
