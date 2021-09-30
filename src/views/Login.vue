@@ -38,7 +38,7 @@
             >
             <v-alert v-if="loggedInError" type="error">Login in error</v-alert>
             <v-spacer></v-spacer>
-            <v-btn small dark color="green darken-2" class="btn-sign">
+            <v-btn small dark color="green darken-2" class="btn-sign"  @click="onSign">
               <router-link
                 class="px-2 white--text text-decoration-none"
                 to="/Sign Up"
@@ -88,6 +88,9 @@ export default {
   }),
 
   methods: {
+    onSign(){
+
+    },
     //Axios
     onLogin() {
       loginAxios(this.username, this.password)

@@ -2,20 +2,20 @@
   <v-main class="green">
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4 class="mb-200">
+       
         <v-card height="100%">
           <v-toolbar dark color="green darken-2">
             <v-toolbar-title>Register Form</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
-             <v-text-field
+              <v-text-field
                 v-model="email"
                 :counter="10"
                 :rules="emailRules"
                 label="Email "
                 outlined
               ></v-text-field>
-
 
               <v-text-field
                 v-model="name"
@@ -32,12 +32,15 @@
                 label="Last Name "
                 outlined
               ></v-text-field>
-              
+
               <v-text-field
                 v-model="password"
                 :counter="10"
+                :append-icon="show1?'mdi-eye':'mdi-eye-off'"
                 :rules="passwordRules"
                 label="Pasword"
+                 :type="show1 ? 'text' : 'password'"
+                  @click:append="show1 = !show1"
                 outlined
               ></v-text-field>
             </v-form>
@@ -53,7 +56,9 @@
             <v-alert v-if="registerInSuccess" type="success"
               >Register in success</v-alert
             >
-            <v-alert v-if="registerInError" type="error">Register in error</v-alert>
+            <v-alert v-if="registerInError" type="error"
+              >Register in error</v-alert
+            >
           </v-card-text>
         </v-card>
       </v-flex>
@@ -73,7 +78,6 @@ export default {
     registerInSuccess: false,
     registerInError: false,
     valid: true,
-  
 
     email: "",
     emailRules: [
@@ -90,24 +94,20 @@ export default {
       (v) => !!v || "Last name is required",
       (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
     ],
-   
+
     password: "",
     passwordRules: [
       (v) => !!v || "Password is required",
       (v) => (v && v.length >= 5) || "Password must be min 5 characters",
       (v) => (v && v.length <= 10) || "Password must be less 10 characters",
     ],
+     show1: false,
   }),
 
   methods: {
     //Axios
     onRegister() {
-      registerAxios(
-        this.name,
-        this.lastName,
-        this.email,
-        this.password
-      )
+      registerAxios(this.name, this.lastName, this.email, this.password)
         .then(() => {
           this.registerInSuccess = true;
         })

@@ -24,6 +24,9 @@ export function loginAxios(email, password) {
 
 
 }
+export function setUserNavA() {
+
+}
 //---------------------User--------------------------------//
 //Register form////POST//
 
@@ -60,8 +63,8 @@ export function calculateAxios(userId,name, lastName, height, weight, age) {
   return axios.put(URL + "user/" + userId, {
     firstName: name,
     lastName: lastName,
-    height: height,
-    weight: weight,
+   // height: height,
+    weight: Number(weight),
     age: age,
   }, {
     headers: {

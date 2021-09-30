@@ -39,6 +39,7 @@
                 ></v-text-field>
               </v-col>
               <hr />
+              <!--heihgt
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model="height"
@@ -48,7 +49,7 @@
                   outlined
                 ></v-text-field>
               </v-col>
-
+-->
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model="weight"
@@ -114,17 +115,18 @@ export default {
       (v) =>
         (v && v.length <= 10) || "Last Name must be less than 10 characters",
     ],
-    height: "",
+    /*height: "",
     heightRules: [
       (v) => !!v || "Height is required",
       (v) => (v && v.length <= 4) || "Height must be less than 4 characters",
       (v) => v > 0 || "Height must be positive number",
     ],
-    weight: "",
+    */
+    weight: 0,
     weightRules: [
       (v) => !!v || " Weight is required",
       (v) => (v && v.length <= 4) || " Weight must be less than 4 characters",
-      (v) => v > 0 || "Height must be positive number",
+      (v) => v > 0 || "Weight must be positive number",
     ],
 
     age: "",
@@ -154,12 +156,13 @@ export default {
         this.userId,
         this.name,
         this.lastName,
-        this.height,
-        this.weight,
-        this.age
+        //this.height,
+        this.weight=Number(this.weight),
+        this.age,
+        
       )
-        .then(() => {
-          this.calculateInSuccess = true;
+         .then((response) => {
+          console.log(response);
         })
         .catch(() => {
           this.calculateInError = true;

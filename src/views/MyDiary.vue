@@ -67,7 +67,45 @@
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
-  <v-card-text>
+   <!--MyDaiaryFood-->
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.name"
+                      label="Food name"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.description"
+                      label="Description"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.calories"
+                      label="Calories"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.date"
+                      label="Date"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+          <!--MyDaiaryFood-->
+            <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
@@ -142,7 +180,6 @@
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      <v-icon small @click="addNewFood(item)"> mdi-plus-circle </v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="green" @click="initialize"> Reset </v-btn>
@@ -157,6 +194,7 @@ import { getFoodAxios } from "../components/services/api";
 import { searchFoodAxios } from "../components/services/api";
 import { deleteFoodAxios } from "../components/services/api";
 import { putFoodAxios } from "../components/services/api";
+
 
 export default {
   data: () => ({
@@ -234,13 +272,6 @@ export default {
         this.onEditFood(itemId);
         console.log(itemId);
       }
-    },
-    ///////////////
-    addNewFood(item) {
-      this.editedIndex = this.foods.indexOf(item);
-      this.editedItem = { ...item };
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
     },
     ////////////////////////////////////////////////////////
     //Axios

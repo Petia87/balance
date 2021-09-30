@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Calculator from '../views/Calculator.vue'
 import Diary from '../views/Diary.vue'
+import MyDiary from '../views/MyDiary.vue'
 import Fitness from '../views/Fitness.vue'
 import Nutrition from '../views/Nutrition.vue'
 import Login from '../views/Login.vue'
@@ -32,6 +33,12 @@ export default new VueRouter({
       path: '/diary',
       name: 'Diary',
       component: Diary
+    }
+    ,
+    {
+      path: '/mydiary',
+      name: 'MyDiary',
+      component: MyDiary
     }
     ,
 
